@@ -1,0 +1,143 @@
+# Over rides for default values in Helm Charts
+destination: &staging_ns labs-staging
+helm_repository: &helm_repo "https://nexus-labs-ci-cd.apps.prod.lxp.academy.who.int/repository/helm-charts/"
+##############
+# Front End Custom Values
+#############
+lxp: &front_end_values
+  config_map: '{ "SSO": { "url": "https://sso-labs-staging.apps.prod.lxp.academy.who.int/auth", "realm": "myrealm", "clientId": "myclient", "redirectUri": "https://learning-experience-platform-labs-staging.apps.prod.lxp.academy.who.int/onboarding" }, "coursesAPI": "https://lxp-course-service-labs-staging.apps.prod.lxp.academy.who.int", "topicsAPI": "https://lxp-course-topic-service-labs-staging.apps.prod.lxp.academy.who.int", "profilesAPI": "https://lxp-profile-service-labs-staging.apps.prod.lxp.academy.who.int", "skillsAPI": "https://lxp-skill-service-labs-staging.apps.prod.lxp.academy.who.int", "recommendedCoursesAPI": "https://lxp-recommendation-service-labs-staging.apps.prod.lxp.academy.who.int"  }'
+interakt: &front_end_interakt_values
+ config_map: '{ "interaktAPI": "https://interakt-backend-labs-staging.apps.prod.lxp.academy.who.int" }'
+lxp-course-topic-service: &lxp_course_topic_service
+  hpa:
+    enabled: true
+    target:
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
+    minReplicas: 1
+    maxReplicas: 2
+    cpuTarget: 1000m
+    memTarget: 500Mi
+lxp-profile-service: &lxp_profile_svc
+  mongodb:
+    persistent: true
+lxp-course-service: &lxp_course_svc
+  postgresql:
+    persistent: true
+lxp-recommendation-service: &lxp_recommendation_svc
+  environment: prod
+interakt-backend: &interakt_backend_svc
+  postgresql:
+    persistent: true
+##############
+# Argo Ignore Differences
+#############
+ignore_differences: &ignore_differences
+  ignoreDifferences:
+    - group: apps.openshift.io
+      kind: DeploymentConfig
+      jsonPointers:
+        - /spec/template/spec/containers/0/image
+        - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+        - /spec/triggers/1/imageChangeParams/lastTriggeredImage
+##############
+# Argo App of Apps declaration
+#############
+applications:
+  - name: learning-experience-platform
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: learning-experience-platform
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 0.21.2
+    ignore_differences: *ignore_differences
+    values: *front_end_values
+  - name: lxp-profile-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-profile-service
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.4.3
+    ignore_differences: *ignore_differences
+    values: *lxp_profile_svc
+  - name: lxp-course-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-course-service
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.7.2
+    ignore_differences: *ignore_differences
+    values: *lxp_course_svc
+  - name: lxp-course-topic-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-course-topic-service
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.2.5
+    ignore_differences: *ignore_differences
+    values: *lxp_course_topic_service
+  - name: lxp-skill-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-skill-service
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.4.8
+    ignore_differences: *ignore_differences
+  - name: sso
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: sso
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.0.3
+    ignore_differences: *ignore_differences
+  - name: lxp-recommendation-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-recommendation-service
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.0.5
+    ignore_differences: *ignore_differences
+    values: *lxp_recommendation_svc
+  - name: whoa-interakt-admin
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: whoa-interakt-admin
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 0.5.0
+    ignore_differences: *ignore_differences
+    values: *front_end_interakt_values
+  - name: mattermost-github-integration
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: mattermost-github-integration
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 0.3.0
+    ignore_differences: *ignore_differences
+  - name: interakt-backend
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: interakt-backend
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.1.0
+    ignore_differences: *ignore_differences
+    values: *interakt_backend_svc

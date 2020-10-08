@@ -1,0 +1,108 @@
+# Over rides for default values in Helm Charts
+destination: &test_ns labs-test
+helm_repository: &helm_repo "https://nexus-labs-ci-cd.apps.prod.lxp.academy.who.int/repository/helm-charts/"
+##############
+# Front End Custom Values
+#############
+lxp: &front_end_values
+  config_map: '{ "SSO": { "url": "https://test-sso-labs-test.apps.prod.lxp.academy.who.int/auth", "realm": "myrealm", "clientId": "myclient", "redirectUri": "https://test-learning-experience-platform-labs-test.apps.prod.lxp.academy.who.int/onboarding" }, "coursesAPI": "https://test-lxp-course-service-labs-test.apps.prod.lxp.academy.who.int", "topicsAPI": "https://test-lxp-course-topic-service-labs-test.apps.prod.lxp.academy.who.int", "profilesAPI": "https://test-lxp-profile-service-labs-test.apps.prod.lxp.academy.who.int", "skillsAPI": "https://test-lxp-skill-service-labs-test.apps.prod.lxp.academy.who.int" , "recommendedCoursesAPI": "https://test-lxp-recommendation-service-labs-test.apps.prod.lxp.academy.who.int" }'
+interakt: &front_end_interakt_values
+  config_map: '{ "interaktAPI": "https://test-interakt-backend-labs-test.apps.prod.lxp.academy.who.int" }'
+##############
+# Argo Ignore Differences
+#############
+ignore_differences: &ignore_differences
+  ignoreDifferences:
+    - group: apps.openshift.io
+      kind: DeploymentConfig
+      jsonPointers:
+        - /spec/template/spec/containers/0/image
+        - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+        - /spec/triggers/1/imageChangeParams/lastTriggeredImage
+##############
+# Argo App of Apps declaration
+#############
+applications:
+  - name: test-learning-experience-platform
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: learning-experience-platform
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 0.21.2
+    ignore_differences: *ignore_differences
+    values: *front_end_values
+  - name: test-lxp-profile-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-profile-service
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.4.3
+    ignore_differences: *ignore_differences
+  - name: test-lxp-course-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-course-service
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.7.2
+    ignore_differences: *ignore_differences
+  - name: test-lxp-course-topic-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-course-topic-service
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.2.5
+    ignore_differences: *ignore_differences
+  - name: test-lxp-skill-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-skill-service
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.4.8
+    ignore_differences: *ignore_differences
+  - name: test-sso
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: sso
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.0.3
+    ignore_differences: *ignore_differences
+  - name: test-lxp-recommendation-service
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp-recommendation-service
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.0.5
+    ignore_differences: *ignore_differences
+  - name: test-whoa-interakt-admin
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: whoa-interakt-admin
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 0.5.0
+    ignore_differences: *ignore_differences
+    values: *front_end_interakt_values
+  - name: test-interakt-backend
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: interakt-backend
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.1.1
+    ignore_differences: *ignore_differences

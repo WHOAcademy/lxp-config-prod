@@ -5,7 +5,7 @@ helm_repository: &helm_repo "https://nexus-labs-ci-cd.apps.prod.lxp.academy.who.
 # Front End Custom Values
 #############
 lxp: &front_end_values
-  config_map: '{ "SSO": { "url": "https://test-sso-labs-test.apps.prod.lxp.academy.who.int/auth", "realm": "myrealm", "clientId": "myclient", "redirectUri": "https://test-learning-experience-platform-labs-test.apps.prod.lxp.academy.who.int/onboarding" }, "coursesAPI": "https://test-lxp-course-service-labs-test.apps.prod.lxp.academy.who.int", "topicsAPI": "https://test-lxp-course-topic-service-labs-test.apps.prod.lxp.academy.who.int", "profilesAPI": "https://test-lxp-profile-service-labs-test.apps.prod.lxp.academy.who.int", "skillsAPI": "https://test-lxp-skill-service-labs-test.apps.prod.lxp.academy.who.int" , "recommendedCoursesAPI": "https://test-lxp-recommendation-service-labs-test.apps.prod.lxp.academy.who.int" }'
+  config_map: '{ "SSO": { "url": "https://test-sso-labs-test.apps.prod.lxp.academy.who.int/auth", "realm": "whoa-lxp", "clientId": "web-app", "redirectUri": "https://test-learning-experience-platform-labs-test.apps.prod.lxp.academy.who.int/onboarding" }, "coursesAPI": "https://test-lxp-course-service-labs-test.apps.prod.lxp.academy.who.int", "topicsAPI": "https://test-lxp-course-topic-service-labs-test.apps.prod.lxp.academy.who.int", "profilesAPI": "https://test-lxp-profile-service-labs-test.apps.prod.lxp.academy.who.int", "skillsAPI": "https://test-lxp-skill-service-labs-test.apps.prod.lxp.academy.who.int" , "recommendedCoursesAPI": "https://test-lxp-recommendation-service-labs-test.apps.prod.lxp.academy.who.int" }'
 interakt: &front_end_interakt_values
   config_map: '{ "interaktAPI": "https://test-interakt-backend-labs-test.apps.prod.lxp.academy.who.int" }'
 ##############

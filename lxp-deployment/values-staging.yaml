@@ -7,7 +7,7 @@ helm_repository: &helm_repo "https://nexus-labs-ci-cd.apps.prod.lxp.academy.who.
 lxp: &front_end_values
   config_map: '{ "SSO": { "url": "https://sso-labs-staging.apps.prod.lxp.academy.who.int/auth", "realm": "whoa-lxp", "clientId": "web-app", "redirectUri": "https://learning-experience-platform-labs-staging.apps.prod.lxp.academy.who.int/onboarding" }, "coursesAPI": "https://lxp-course-service-labs-staging.apps.prod.lxp.academy.who.int", "topicsAPI": "https://lxp-course-topic-service-labs-staging.apps.prod.lxp.academy.who.int", "profilesAPI": "https://lxp-profile-service-labs-staging.apps.prod.lxp.academy.who.int", "skillsAPI": "https://lxp-skill-service-labs-staging.apps.prod.lxp.academy.who.int", "recommendedCoursesAPI": "https://lxp-recommendation-service-labs-staging.apps.prod.lxp.academy.who.int"  }'
 interakt: &front_end_interakt_values
- config_map: '{ "interaktAPI": "https://interakt-backend-labs-staging.apps.prod.lxp.academy.who.int" }'
+  config_map: '{ "interaktAPI": "https://interakt-backend-labs-staging.apps.prod.lxp.academy.who.int" }'
 lxp-course-topic-service: &lxp_course_topic_service
   hpa:
     enabled: true
@@ -100,7 +100,7 @@ applications:
     chart_name: sso
     sync_policy_automated: true
     destination: *staging_ns
-    source_ref: 1.0.3
+    source_ref: 1.2.0
     ignore_differences: *ignore_differences
   - name: lxp-recommendation-service
     enabled: true

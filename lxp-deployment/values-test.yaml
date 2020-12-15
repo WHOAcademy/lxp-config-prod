@@ -30,7 +30,7 @@ applications:
     chart_name: learning-experience-platform
     sync_policy_automated: true
     destination: *test_ns
-    source_ref: 0.22.0
+    source_ref: 0.22.1
     ignore_differences: *ignore_differences
     values: *front_end_values
   - name: test-lxp-profile-service

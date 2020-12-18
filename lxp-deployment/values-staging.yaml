@@ -100,7 +100,7 @@ applications:
     chart_name: sso
     sync_policy_automated: true
     destination: *staging_ns
-    source_ref: 1.2.0
+    source_ref: 1.3.0
     ignore_differences: *ignore_differences
   - name: lxp-recommendation-service
     enabled: true

@@ -29,6 +29,19 @@ lxp-recommendation-service: &lxp_recommendation_svc
 interakt-backend: &interakt_backend_svc
   postgresql:
     persistent: true
+lxp: &lxp_svc
+  mongodb:
+    persistent: true
+  memcached:
+    persistence:
+      enabled: false
+  mysql:
+    primary:
+      persistence:
+        enabled: true
+    secondary:
+      persistence:
+        enabled: true
 ##############
 # Argo Ignore Differences
 #############
@@ -141,3 +154,13 @@ applications:
     source_ref: 1.1.0
     ignore_differences: *ignore_differences
     values: *interakt_backend_svc
+  - name: lxp
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp
+    sync_policy_automated: true
+    destination: *staging_ns
+    source_ref: 1.0.0
+    ignore_differences: *ignore_differences
+    values: *lxp_svc

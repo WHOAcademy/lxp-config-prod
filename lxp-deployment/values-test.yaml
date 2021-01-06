@@ -107,11 +107,11 @@ applications:
     source_ref: 1.1.1
     ignore_differences: *ignore_differences
   - name: test-lxp
-      enabled: true
-      source: *helm_repo
-      source_path: ""
-      chart_name: lxp
-      sync_policy_automated: true
-      destination: *test_ns
-      source_ref: 1.0.0
-      ignore_differences: *ignore_differences
+    enabled: true
+    source: *helm_repo
+    source_path: ""
+    chart_name: lxp
+    sync_policy_automated: true
+    destination: *test_ns
+    source_ref: 1.0.0
+    ignore_differences: *ignore_differences

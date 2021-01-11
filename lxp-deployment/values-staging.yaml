@@ -161,6 +161,6 @@ applications:
     chart_name: lxp
     sync_policy_automated: true
     destination: *staging_ns
-    source_ref: 1.0.0
+    source_ref: 2.1.0
     ignore_differences: *ignore_differences
     values: *lxp_svc

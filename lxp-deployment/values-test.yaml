@@ -113,5 +113,5 @@ applications:
     chart_name: lxp
     sync_policy_automated: true
     destination: *test_ns
-    source_ref: 2.2.0
+    source_ref: 2.2.1
     ignore_differences: *ignore_differences

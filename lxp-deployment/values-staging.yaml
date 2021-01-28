@@ -42,8 +42,9 @@ lxp: &lxp_svc
     secondary:
       persistence:
         enabled: true
-  persistent_storage:
-    enabled: true
+  edxapp:
+    persistence:
+      enabled: true
 ##############
 # Argo Ignore Differences
 #############

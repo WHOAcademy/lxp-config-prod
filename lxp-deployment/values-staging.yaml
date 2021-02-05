@@ -44,7 +44,7 @@ lxp: &lxp_svc
         enabled: true
   edxapp:
     persistence:
-      enabled: true
+      enabled: false
 ##############
 # Argo Ignore Differences
 #############
